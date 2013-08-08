@@ -1,5 +1,5 @@
 /**
- * jQuery Wrecker v0.1
+ * jQuery Wrecker v0.2
  * Responsive Equal-Height Columns and Rows
  * http://www.svachon.com/blog/wrecker-responsive-equal-height-columns-and-rows
  *
@@ -41,10 +41,9 @@ $.Wrecker = function()
 	function calculateGrid()
 	{
 		var newColumnCount = settings.maxColumns;
-		var numResponsiveColumns = settings.responsiveColumns.length;
 		var windowWidth = $(window).innerWidth();
 		
-		for (var i=0; i<numResponsiveColumns; i++)
+		for (var i=0, numResponsiveColumns=settings.responsiveColumns.length; i<numResponsiveColumns; i++)
 		{
 			var currentSize = settings.responsiveColumns[i];
 			
@@ -164,6 +163,7 @@ $.Wrecker = function()
 $.fn.wrecker = function(options)
 {
 	var optionsString = (typeof options === "string");
+	var args = Array.prototype.slice.call(arguments, 1);
 	
 	this.each(function(i)
 	{
@@ -184,7 +184,7 @@ $.fn.wrecker = function(options)
 				return;
 			}
 			
-			instance[options].apply(instance, Array.prototype.slice.call(arguments,1) );
+			instance[options].apply(instance, args);
 		}
 		else
 		{
