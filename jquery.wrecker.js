@@ -1,5 +1,5 @@
 /**
- * jQuery Wrecker v0.2
+ * jQuery Wrecker v0.3
  * Responsive Equal-Height Columns and Rows
  * http://www.svachon.com/blog/wrecker-responsive-equal-height-columns-and-rows
  *
@@ -20,7 +20,8 @@ $.Wrecker = function()
 	var settings = {
 		itemSelector      : "",
 		maxColumns        : 1,
-		responsiveColumns : [ /*{800:1}*/ ]	// Had to nest this way because not all browsers loop through objects in correct order
+		responsiveColumns : [ /*{800:1}*/ ], // Had to nest this way because not all browsers loop through objects in correct order
+		excludeLastSingleItem : false
 	};
 	
 	
@@ -112,6 +113,12 @@ $.Wrecker = function()
 			
 			var startIndex = 0;
 			var count = 0;
+
+			var numCellsIsEven = numCells % 2 === 0;
+			var excludeLastItem = false;
+			if (settings.excludeLastSingleItem && !numCellsIsEven) {
+				excludeLastItem = true;
+			}
 			
 			// Add row containers
 			cells.each(function(i)
@@ -120,22 +127,34 @@ $.Wrecker = function()
 				{
 					startIndex = i;
 				}
-				
-				if (count>=columnCount || i>=numCells-1)
+
+				if (!excludeLastItem || i < numCells-1)
 				{
-					cells.slice(startIndex,i+1).wrapAll('<div class="wrecker-row" style="display:table-row"/>');
+				
+					if (count>=columnCount || i>=numCells-1)
+					{
+						cells.slice(startIndex,i+1).wrapAll('<div class="wrecker-row" style="display:table-row"/>');
+
+						count = 0;
+					}
 					
-					count = 0;						
-				}
-				
-				// Since Wrecker styles are removed for single columns, they must be re-added
-				if (previousColumnCount <= 1)
-				{
-					$(this).addClass("wrecker-cell").css({display:"table-cell", float:"none"});
+					// Since Wrecker styles are removed for single columns, they must be re-added
+					if (previousColumnCount <= 1)
+					{
+						$(this).addClass("wrecker-cell").css({display:"table-cell", float:"none"});
+					}
+
+				}else{
+					$(this).addClass("wrecker-single-last");
 				}
 			});
 			
-			element.addClass("wrecker").css("display", "table");
+			if (excludeLastItem)
+			{
+				cells.slice(0,numCells-2).parent().wrapAll('<div class="wrecker" style="display:table"/>');
+			}else{
+				element.addClass("wrecker").css("display", "table");
+			}
 		}
 		else
 		{
