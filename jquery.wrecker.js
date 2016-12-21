@@ -1,5 +1,5 @@
 /**
- * jQuery Wrecker v0.2
+ * jQuery Wrecker v0.4
  * Responsive Equal-Height Columns and Rows
  * http://www.svachon.com/blog/wrecker-responsive-equal-height-columns-and-rows
  *
@@ -20,7 +20,8 @@ $.Wrecker = function()
 	var settings = {
 		itemSelector      : "",
 		maxColumns        : 1,
-		responsiveColumns : [ /*{800:1}*/ ]	// Had to nest this way because not all browsers loop through objects in correct order
+		responsiveColumns : [ /*{800:1}*/ ], // Had to nest this way because not all browsers loop through objects in correct order
+		excludeLastSingleItem : false
 	};
 	
 	
@@ -112,6 +113,13 @@ $.Wrecker = function()
 			
 			var startIndex = 0;
 			var count = 0;
+
+			var numCellsIsEven = numCells % 2 === 0;
+			var excludeLastItem = false;
+			if (settings.excludeLastSingleItem && !numCellsIsEven) {
+				excludeLastItem = true;
+				var lastCell = cells.last().addClass("wrecker-single-last");
+			}
 			
 			// Add row containers
 			cells.each(function(i)
@@ -120,22 +128,32 @@ $.Wrecker = function()
 				{
 					startIndex = i;
 				}
-				
-				if (count>=columnCount || i>=numCells-1)
+
+				if (!excludeLastItem || i < numCells-1)
 				{
-					cells.slice(startIndex,i+1).wrapAll('<div class="wrecker-row" style="display:table-row"/>');
+				
+					if (count>=columnCount || i>=numCells-1)
+					{
+						cells.slice(startIndex,i+1).wrapAll('<div class="wrecker-row" style="display:table-row"/>');
+
+						count = 0;
+					}
 					
-					count = 0;						
-				}
-				
-				// Since Wrecker styles are removed for single columns, they must be re-added
-				if (previousColumnCount <= 1)
-				{
-					$(this).addClass("wrecker-cell").css({display:"table-cell", float:"none"});
+					// Since Wrecker styles are removed for single columns, they must be re-added
+					if (previousColumnCount <= 1)
+					{
+						$(this).addClass("wrecker-cell").css({display:"table-cell", float:"none"});
+					}
+
+				}else{
+					$(this).remove();
 				}
 			});
 			
 			element.addClass("wrecker").css("display", "table");
+			if (excludeLastItem) {
+				lastCell.insertAfter(element);
+			}
 		}
 		else
 		{
