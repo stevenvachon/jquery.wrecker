@@ -1,5 +1,5 @@
 /**
- * jQuery Wrecker v0.3
+ * jQuery Wrecker v0.4
  * Responsive Equal-Height Columns and Rows
  * http://www.svachon.com/blog/wrecker-responsive-equal-height-columns-and-rows
  *
@@ -118,6 +118,7 @@ $.Wrecker = function()
 			var excludeLastItem = false;
 			if (settings.excludeLastSingleItem && !numCellsIsEven) {
 				excludeLastItem = true;
+				var lastCell = cells.last().addClass("wrecker-single-last");
 			}
 			
 			// Add row containers
@@ -145,15 +146,13 @@ $.Wrecker = function()
 					}
 
 				}else{
-					$(this).addClass("wrecker-single-last");
+					$(this).remove();
 				}
 			});
 			
-			if (excludeLastItem)
-			{
-				cells.slice(0,numCells-2).parent().wrapAll('<div class="wrecker" style="display:table"/>');
-			}else{
-				element.addClass("wrecker").css("display", "table");
+			element.addClass("wrecker").css("display", "table");
+			if (excludeLastItem) {
+				lastCell.insertAfter(element);
 			}
 		}
 		else
