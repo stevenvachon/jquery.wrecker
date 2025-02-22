@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Simple Wrecker Demo</title>
+<style type="text/css">
+.item {
+	float: left;
+	width: 25%;
+}
+
+.item:nth-child(5n) { clear:left; }
+
+/* optional styles */
+
+.item {
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 10px;
+}
+
+.item > img {
+	display: block;
+	height: auto;
+	width: 100%;
+}
+
+.item:nth-child(2n)		{ background-color:#f6f6f6; }
+.item:nth-child(2n-1)	{ background-color:#eaeaea; }
+
+.wrecker				{ width:100%; }
+.wrecker-cell			{ vertical-align:top; }
+
+/* responsive styles */
+
+@media (max-width: 1024px) {
+	.item				{ width:33.33%; }
+	.item:nth-child(4n) { clear:left; }
+	.item:nth-child(5n) { clear:none; }
+}
+
+@media (max-width: 800px) {
+	.item				{ width:50%; }
+	.item:nth-child(3n) { clear:left; }
+	.item:nth-child(2n) { clear:none; }
+}
+
+@media (max-width: 640px) {
+	.item				{ float:none; width:100%; }
+	.item:nth-child(2n) { clear:none; }
+}
+</style>
+<script type="text/javascript" src="libs/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="jquery.wrecker.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#container").wrecker({
+		// options
+		itemSelector : ".item",
+		maxColumns : 4,
+		responsiveColumns : [
+			// windowMaxWidth : columns
+			// windowMaxWidth order and values should match those in your responsive CSS
+			{1024 : 3},
+			{800  : 2},
+			{640  : 1}
+		]
+	});
+});
+</script>
+</head>
+<body>
+
+<h1>Simple Wrecker Demo</h1>
+<p>Resize the width of this window. You will notice that the <code>display:table</code> layout is responsive from 4 columns down to 1, and wraps like a <code>float</code> layout.</p>
+<p>To better support earlier versions of Internet Explorer, check out the <a href="advanced.html">advanced demo</a> to see how external libraries help the situation.</p>
+
+<div id="container">
+	<div class="item"><img src="http://lorempixel.com/640/480" width="640" height="480" alt=""/></div>
+	<div class="item">
+		<img src="http://lorempixel.com/640/480" width="640" height="480" alt=""/>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget placerat mi. Sed eget leo eget dui aliquam interdum id id elit. Aenean fermentum, eros quis imperdiet mollis, metus ante volutpat leo, vitae gravida ante leo rhoncus eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse ullamcorper ultrices elementum.</p>
+	</div>
+	<div class="item"><img src="http://lorempixel.com/640/480" width="640" height="480" alt=""/></div>
+	<div class="item">
+		<img src="http://lorempixel.com/640/480" width="640" height="480" alt=""/>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget placerat mi. Sed eget leo eget dui aliquam interdum id id elit.</p>
+	</div>
+	
+	<div class="item"><img src="http://lorempixel.com/640/480" width="640" height="480" alt=""/></div>
+	<div class="item">
+		<img src="http://lorempixel.com/640/480" width="640" height="480" alt=""/>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget placerat mi. Sed eget leo eget dui aliquam interdum id id elit. Aenean fermentum, eros quis imperdiet mollis, metus ante volutpat leo, vitae gravida ante leo rhoncus eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse ullamcorper ultrices elementum.</p>
+	</div>
+	<div class="item"><img src="http://lorempixel.com/640/480" width="640" height="480" alt=""/></div>
+	<div class="item">
+		<img src="http://lorempixel.com/640/480" width="640" height="480" alt=""/>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget placerat mi. Sed eget leo eget dui aliquam interdum id id elit.</p>
+	</div>
+</div>
+
+</body>
+</html>
